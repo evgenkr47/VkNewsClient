@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">VkNewsClient</string>
+    <string name="test_text">Какой-то очень интересный текст, который тут есть</string>
+    <string name="view_counts_text">916</string>
+    <string name="share_count_text">7</string>
+    <string name="comments_count_text">8</string>
+    <string name="like_count_text">23</string>
+    <string name="home_text">Главная</string>
+    <string name="favorite_text">Избранное</string>
+    <string name="profile_text">Профиль</string>
+</resources>
