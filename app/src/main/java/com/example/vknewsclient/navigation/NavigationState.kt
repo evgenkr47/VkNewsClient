@@ -2,8 +2,10 @@ package com.example.vknewsclient.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.vknewsclient.domain.FeedPost
 
 class NavigationState(
     val navHostController: NavHostController
@@ -11,7 +13,9 @@ class NavigationState(
     fun navigateTo(route:String){
         navHostController.navigate(route)
         {
-            popUpTo(navHostController.graph.startDestinationId) {
+            //findStartDestination().id используется при вложенной навигации
+            //Без вложенной метод startDestinationId
+            popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
             launchSingleTop = true
@@ -19,6 +23,9 @@ class NavigationState(
         }
     }
 
+    fun navigateToComments(feedPost: FeedPost){
+        navHostController.navigate(Screen.Comments.getRouteWithArgs(feedPost))
+    }
 }
 
 @Composable

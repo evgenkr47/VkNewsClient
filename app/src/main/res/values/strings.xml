@@ -8,4 +8,6 @@
     <string name="home_text">Главная</string>
     <string name="favorite_text">Избранное</string>
     <string name="profile_text">Профиль</string>
+    <string name="button_login">Войти</string>
+    <integer name="com_vk_sdk_AppId">51500676</integer>
 </resources>

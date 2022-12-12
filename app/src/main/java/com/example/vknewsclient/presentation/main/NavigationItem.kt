@@ -1,4 +1,4 @@
-package com.example.vknewsclient.ui.theme
+package com.example.vknewsclient.presentation.main
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite
@@ -14,7 +14,7 @@ sealed class NavigationItem(
     val icon: ImageVector
 ){
     object Home: NavigationItem(
-        screen = Screen.NewsFeed,
+        screen = Screen.Home,
         titleResId = R.string.home_text,
         icon = Icons.Outlined.Home
     )

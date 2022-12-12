@@ -1,4 +1,4 @@
-package com.example.vknewsclient.ui.theme
+package com.example.vknewsclient.presentation.news
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -13,14 +13,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.vknewsclient.presentation.main.MainViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.vknewsclient.domain.FeedPost
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+
 @Composable
-fun HomeScreen(viewModel: MainViewModel){
-    val feedPosts = viewModel.feedPosts.observeAsState(listOf())
+fun NewsFeedScreen(
+    onCommentClickListener: (FeedPost) -> Unit
+){
+    val viewModel: NewsFeedViewModel = viewModel()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
 
+    when(val currentState = screenState.value){
+        is NewsFeedScreenState.Posts -> {
+            FeedPosts(
+                posts = currentState.posts,
+                viewModel = viewModel,
+                onCommentClickListener = onCommentClickListener
+            )
+        }
+        NewsFeedScreenState.Initial -> {}
+    }
 
+}
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@Composable
+private fun FeedPosts(
+    posts: List<FeedPost>,
+    viewModel: NewsFeedViewModel,
+    onCommentClickListener: (FeedPost) -> Unit
+){
     LazyColumn(
         //паддинг для контента 72дп для низа, так как bottom navigation view 56 дп
         contentPadding = PaddingValues(
@@ -32,7 +55,7 @@ fun HomeScreen(viewModel: MainViewModel){
         //отступ между itemами
         verticalArrangement = Arrangement.spacedBy(8.dp)){
         items(
-            items = feedPosts.value,
+            items = posts,
             key = {it.id}
         ){ feedPost ->
             val dismissState = rememberDismissState()
@@ -58,12 +81,11 @@ fun HomeScreen(viewModel: MainViewModel){
                     onShareItemClickListener = { statisticItem ->
                         viewModel.updateCount(feedPost, statisticItem)
                     },
-                    onCommentItemClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
+                    onCommentItemClickListener = {
+                        onCommentClickListener(feedPost)
                     }
                 )
             }
-
         }
     }
 }
